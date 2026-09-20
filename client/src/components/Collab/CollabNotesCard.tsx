@@ -139,7 +139,7 @@ export function NoteCard({ note, currentUser, canEdit, onUpdate, onDelete, onEdi
           <div style={{ flex: 1, minWidth: 0 }}>
             {note.content && (
               <div className="collab-note-md" style={{
-                fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0,
+                fontSize: 'calc(11.5px * var(--fs-scale-caption, 1))', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0,
                 maxHeight: '4.5em', overflow: 'hidden',
                 wordBreak: 'break-word', fontFamily: FONT,
               }}>

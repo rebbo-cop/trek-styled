@@ -246,6 +246,18 @@ html.dark .bg-slate-50\/60, html.dark [class*="bg-slate-50/"] { background-color
   background: none !important;
   padding: 1px 2px;
 }
+
+.dp-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 4px;
+  margin: 4px 12px;
+  border-radius: var(--radius-sm);
+  background: none;
+}
+
 /* Reveal on row hover (and on keyboard focus, so the buttons are reachable by Tab). */
 .dp-row:hover .reorder-buttons,
 .dp-row:focus-within .reorder-buttons {
@@ -605,7 +617,7 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   --text-primary: #111827;
   --text-secondary: #374151;
   --text-muted: #6b7280;
-  --text-faint: #9ca3af;
+  --text-faint: #7c8a9c;
   --border-primary: #e5e7eb;
   --border-secondary: #f3f4f6;
   --border-faint: rgba(0,0,0,0.06);
@@ -814,17 +826,17 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
    monochrome accent above is untouched — existing users see no change. */
 
 :root[data-scheme="indigo"] {
-  --accent: #4f46e5; --accent-text: #ffffff; --accent-on: #4338ca;
-  --accent-hover: #4338ca; --accent-subtle: #eef2ff;
+  --accent: #526D82; --accent-text: #ffffff; --accent-on: #213544;
+  --accent-hover: #4338ca; --accent-subtle: #d9dff2;
 }
 .dark[data-scheme="indigo"] {
-  --accent: #6366f1; --accent-text: #ffffff; --accent-on: #a5b4fc;
-  --accent-hover: #4f46e5; --accent-subtle: rgba(99, 102, 241, 0.18);
+  --accent: #6366f1; --accent-text: #ffffff; --accent-on: #a2b7c7;
+  --accent-hover: #526D82; --accent-subtle: #464952;
 }
 
 :root[data-scheme="teal"] {
   --accent: #0d9488; --accent-text: #ffffff; --accent-on: #0f766e;
-  --accent-hover: #0f766e; --accent-subtle: #f0fdfa;
+  --accent-hover: #0f766e; --accent-subtle: #c7d7d4;
 }
 .dark[data-scheme="teal"] {
   --accent: #14b8a6; --accent-text: #04211f; --accent-on: #5eead4;
@@ -832,12 +844,12 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 }
 
 :root[data-scheme="rose"] {
-  --accent: #e11d48; --accent-text: #ffffff; --accent-on: #be123c;
-  --accent-hover: #be123c; --accent-subtle: #fff1f2;
+  --accent: #BD5579; --accent-text: #ffffff; --accent-on: #601D49;
+  --accent-hover: #601D49; --accent-subtle: #e6cad4;
 }
 .dark[data-scheme="rose"] {
   --accent: #f43f5e; --accent-text: #ffffff; --accent-on: #fda4af;
-  --accent-hover: #e11d48; --accent-subtle: rgba(244, 63, 94, 0.18);
+  --accent-hover: #BD5579; --accent-subtle: rgba(244, 63, 94, 0.18);
 }
 
 :root[data-scheme="amber"] {
@@ -856,6 +868,15 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 .dark[data-scheme="violet"] {
   --accent: #8b5cf6; --accent-text: #ffffff; --accent-on: #c4b5fd;
   --accent-hover: #7c3aed; --accent-subtle: rgba(139, 92, 246, 0.18);
+}
+
+:root[data-scheme="green"] {
+  --accent: #5F6F52; --accent-text: #ffffff; --accent-on: #1a2412;
+  --accent-hover: #38442d; --accent-subtle: #e4edde;
+}
+.dark[data-scheme="green"] {
+  --accent: #A9B388; --accent-text: #ffffff; --accent-on: #e1e7ce;
+  --accent-hover: #a0ad94; --accent-subtle: #e4edde;
 }
 
 /* High-Contrast — raises neutral text/border contrast and solidifies surfaces,
@@ -1156,9 +1177,7 @@ img[alt="TREK"] {
   transition: all 0.2s ease;
 }
 
-
-
-/* Tagesliste */
+/* Day List */
 .day-list-item {
   transition: background-color 0.15s ease;
 }
@@ -1173,8 +1192,10 @@ img[alt="TREK"] {
 }
 
 .scroll-container {
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  padding: var(--sp-1);
+  background-color: var(--accent-subtle);
 }
 
 /* ── Dark-Mode: Tailwind-Klassen ─────────────── */
@@ -1287,6 +1308,97 @@ img[alt="TREK"] {
 .collab-note-md-full table { border-collapse: collapse; width: 100%; margin: 0.5em 0; }
 .collab-note-md-full th, .collab-note-md-full td { border: 1px solid var(--border-primary); padding: 4px 8px; font-size: 0.9em; }
 .collab-note-md-full hr { border: none; border-top: 1px solid var(--border-primary); margin: 0.8em 0; }
+
+/* Day plan card */
+.dp-day {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  margin: var(--sp-1);
+  padding: 0;
+}
+
+.dp-day-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 12px;
+}
+
+.dp-weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: 36px;
+}
+
+.dp-title-layout {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+  padding-left: var(--sp-3);
+}
+
+.dp-title {
+  font-size: calc(16px * var(--fs-scale-title, 1));
+  font-weight: 500;
+  line-height: 160%;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.dp-date {
+  flex-shrink: 0;
+  font-size: calc(10px * var(--fs-scale-caption, 1));
+  font-weight: 500;
+  color: var(--text-faint);
+  white-space: nowrap;
+  line-height: 14px;
+}
+
+.dp-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: var(--sp-3);
+}
+
+.dp-day .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 1;
+  min-width: 0;
+  border-radius: var(--radius-sm);
+  padding: 4px 12px 4px 8px;
+  margin-left: 4px;
+  border: none;
+  text-align: left;
+  font-weight: 400;
+}
+
+.hotel-name {
+  font-weight: 500;
+}
+
+.collab-note-md {
+  font-size: calc(10.5px * var(--fs-scale-caption, 1));
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 140%;
+  margin-top: 2px;
+  word-break: break-word;
+}
 
 /* Day-plan header action grid (edit / +transport / note / collapse) */
 .dp-day-actions button {
