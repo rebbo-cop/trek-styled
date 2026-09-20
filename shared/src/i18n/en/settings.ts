@@ -390,6 +390,7 @@ const settings: TranslationStrings = {
   'settings.appearance.scheme.rose': 'Rose',
   'settings.appearance.scheme.amber': 'Amber',
   'settings.appearance.scheme.violet': 'Violet',
+  'settings.appearance.scheme.green': 'Sage Green',
   'settings.appearance.scheme.custom': 'Custom',
   'settings.appearance.customAccent': 'Custom accent',
   'settings.appearance.contrastOk': 'Good contrast',

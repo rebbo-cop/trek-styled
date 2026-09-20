@@ -13,7 +13,7 @@ const NARROW_QUERY = '(min-width: 768px) and (max-width: 1023px)'
 const MIN_MAP = 360
 
 export function useResizablePanels() {
-  const [leftWidth, setLeftWidth] = useState<number>(() => Number.parseInt(localStorage.getItem('sidebarLeftWidth') || '') || 340)
+  const [leftWidth, setLeftWidth] = useState<number>(() => Number.parseInt(localStorage.getItem('sidebarLeftWidth') || '') || 460)
   const [rightWidth, setRightWidth] = useState<number>(() => Number.parseInt(localStorage.getItem('sidebarRightWidth') || '') || 300)
   const [leftCollapsed, setLeftCollapsed] = useState(false)
   const [rightCollapsed, setRightCollapsed] = useState(false)

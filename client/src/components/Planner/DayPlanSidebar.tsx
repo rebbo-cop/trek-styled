@@ -1525,7 +1525,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
         onAddDay={onAddDay}
       />
 
-      {/* Tagesliste */}
+      {/* Day Plan */}
       <div className={`scroll-container${draggingId ? '' : ' trek-stagger'}`} style={{ flex: 1, overflowY: 'auto', minHeight: 0 }} ref={scrollContainerRef} onScroll={(e) => onScrollTopChange?.((e.currentTarget as HTMLElement).scrollTop)}>
         {days.map((day, index) => {
           const isSelected = selectedDayId === day.id
@@ -1618,7 +1618,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
             // The card wrapper stays untinted — its three regions (badge, header,
             // activity list) paint themselves, so a plugin controls them separately.
             <div key={day.id} ref={el => { if (el) dayRefs.current.set(day.id, el); else dayRefs.current.delete(day.id) }}
-              title={dayTint?.label || undefined} style={{ borderBottom: '1px solid var(--border-faint)' }}>
+              title={dayTint?.label || undefined} className='dp-day'>
               {/* Tages-Header — akzeptiert Drops aus der PlacesSidebar */}
               <div
                 className="dp-day-header"
@@ -1644,15 +1644,13 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                 onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragOverDayId(null) }}
                 onDrop={e => handleDropOnDay(e, day.id)}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  padding: '11px 14px 11px 16px',
                   cursor: 'pointer',
-                  background: isDragTarget ? 'rgba(17,24,39,0.07)' : (isSelected ? 'var(--bg-selected)' : headerTintBg),
+                  background: isDragTarget ? 'rgba(17,24,39,0.07)' : (isSelected ? 'var(--accent-subtle)' : headerTintBg),
                   transition: 'background 0.12s',
                   userSelect: 'none',
                   outline: isDragTarget ? '2px dashed rgba(17,24,39,0.25)' : 'none',
                   outlineOffset: -2,
-                  borderRadius: isDragTarget ? 8 : 0,
+                  borderRadius: 8,
                   touchAction: 'manipulation',
                 }}
                 // A tinted header hovers to a deeper mix of its own tone rather than to
@@ -1672,100 +1670,82 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                   const wLng = loc?.place?.lng ?? weatherHotel?.place_lng
                   const weatherName = loc?.place?.name ?? weatherHotel?.place_name ?? null
                   const hasWeather = !!(day.date && wLat != null && wLng != null)
-                  return (
-                    <div style={{
-                      // With weather the badge is a tall stack and has to start at
-                      // the top of the row; without it, it is a lone 26px circle and
-                      // pinning it to the top leaves it floating above the day title.
-                      flexShrink: 0, alignSelf: hasWeather ? 'flex-start' : 'center',
-                      width: hasWeather ? 34 : 26,
-                      borderRadius: hasWeather ? 11 : '50%',
-                      // Selection still wins. A tinted badge mixes the tone INTO
-                      // --bg-hover so it stays the same pill component, and takes
-                      // --text-secondary: the number is 11px bold, so 4.5:1 applies
+                 
+                  if (hasWeather) return (
+                    <div className='dp-weather' style={{
                       // and --text-muted is already borderline on the untinted pill.
-                      background: isSelected ? 'var(--accent)' : (dayTintBackground(dayTint, 'badge', '--day-tint-badge', 'var(--bg-hover)') ?? 'var(--bg-hover)'),
-                      color: isSelected ? 'var(--accent-text)' : (dayTinted(dayTint, 'badge') ? 'var(--text-secondary)' : 'var(--text-muted)'),
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden',
+                      background: isSelected ? 'none' : (dayTintBackground(dayTint, 'badge', '--day-tint-badge', 'none') ?? 'none'),
+                      color: isSelected ? 'var(--accent-on)' : (dayTinted(dayTint, 'badge') ? 'var(--text-secondary)' : 'var(--text-muted)')
                     }}>
-                      {/* lineHeight 1, or the digit rides the line box's leading and
-                          sits above centre on the plain badge — visible as soon as
-                          there is no weather block under it to distract from it. */}
-                      <div style={{ width: '100%', height: 26, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'calc(11px * var(--fs-scale-caption, 1))', fontWeight: 700, lineHeight: 1 }}>
-                        {index + 1}
-                      </div>
-                      {hasWeather && (
-                        <>
-                          <div style={{ width: '64%', height: 1, background: 'currentColor', opacity: 0.25 }} />
-                          <div style={{ padding: '3px 0 4px' }}>
-                            <WeatherWidget lat={wLat ?? null} lng={wLng ?? null} date={day.date} stacked locationName={weatherName} />
-                          </div>
-                        </>
-                      )}
+                      <WeatherWidget lat={wLat ?? null} lng={wLng ?? null} date={day.date} stacked locationName={weatherName} />
                     </div>
                   )
                 })()}
 
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, minWidth: 0 }}>
-                    <span style={{ fontSize: 'calc(14px * var(--fs-scale-body, 1))', fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flexShrink: 1, minWidth: 0 }}>
-                      {day.title || t('dayplan.dayN', { n: index + 1 })}
-                    </span>
+                  <div className="dp-title-layout">
                     {formattedDate && (
                       <>
-                        <span style={{ flexShrink: 0, width: 1, height: 11, background: 'var(--border-primary)' }} />
-                        <span style={{ flexShrink: 0, fontSize: 'calc(11px * var(--fs-scale-caption, 1))', fontWeight: 400, color: 'var(--text-faint)', whiteSpace: 'nowrap' }}>
+                        <span className="dp-date">
                           {formattedDate}
                         </span>
                       </>
                     )}
+                    <span className='dp-title'>
+                      {day.title || t('dayplan.dayN', { n: index + 1 })}
+                    </span>
+                    
                   </div>
                   {(() => {
                     const hasAccs = accommodations.some(a => isDayInAccommodationRange(day, a.start_day_id, a.end_day_id, days))
                     const hasRentals = getActiveRentalsForDay(day.id).length > 0
                     if (!hasAccs && !hasRentals) return null
-                    return <div style={{ height: 1, background: 'var(--border-faint)', margin: '5px 0 5px' }} />
-                  })()}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'nowrap', minWidth: 0 }}>
-                    {(() => {
-                      const dayAccs = accommodations.filter(a => isDayInAccommodationRange(day, a.start_day_id, a.end_day_id, days))
-                        // Sort: check-out first, then ongoing stays, then check-in last
-                        .sort((a, b) => {
-                          const aIsOut = a.end_day_id === day.id && a.start_day_id !== day.id
-                          const bIsOut = b.end_day_id === day.id && b.start_day_id !== day.id
-                          const aIsIn = a.start_day_id === day.id
-                          const bIsIn = b.start_day_id === day.id
-                          if (aIsOut && !bIsOut) return -1
-                          if (!aIsOut && bIsOut) return 1
-                          if (aIsIn && !bIsIn) return 1
-                          if (!aIsIn && bIsIn) return -1
-                          return 0
-                        })
-                      if (dayAccs.length === 0) return null
-                      return dayAccs.map(acc => {
-                        const isCheckIn = acc.start_day_id === day.id
-                        const isCheckOut = acc.end_day_id === day.id
-                        const iconColor = isCheckOut && !isCheckIn ? '#ef4444' : isCheckIn ? '#22c55e' : 'var(--text-faint)'
-                        return (
-                          <button type="button" key={acc.id} onClick={e => { e.stopPropagation(); if ((acc as any).place_id) onPlaceClick((acc as any).place_id) }} className="bg-surface-hover" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 1, minWidth: 0, cursor: (acc as any).place_id ? 'pointer' : 'default', borderRadius: 7, padding: '2px 7px 2px 6px', border: 'none', font: 'inherit', textAlign: 'left' }}>
-                            <Hotel size={11} strokeWidth={1.8} style={{ color: iconColor, flexShrink: 0 }} />
-                            <span className="text-content-muted" style={{ fontSize: 'calc(10.5px * var(--fs-scale-caption, 1))', fontWeight: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{(acc as any).place_name || (acc as any).reservation_title}</span>
-                          </button>
-                        )
-                      })
+                    return (
+                      <div className="dp-badges">
+                        {(() => {
+                          const dayAccs = accommodations.filter(a => isDayInAccommodationRange(day, a.start_day_id, a.end_day_id, days))
+                            // Sort: check-out first, then ongoing stays, then check-in last
+                            .sort((a, b) => {
+                              const aIsOut = a.end_day_id === day.id && a.start_day_id !== day.id
+                              const bIsOut = b.end_day_id === day.id && b.start_day_id !== day.id
+                              const aIsIn = a.start_day_id === day.id
+                              const bIsIn = b.start_day_id === day.id
+                              if (aIsOut && !bIsOut) return -1
+                              if (!aIsOut && bIsOut) return 1
+                              if (aIsIn && !bIsIn) return 1
+                              if (!aIsIn && bIsIn) return -1
+                              return 0
+                            })
+                          if (dayAccs.length === 0) return null
+                          return dayAccs.map(acc => {
+                            const isCheckIn = acc.start_day_id === day.id
+                            const isCheckOut = acc.end_day_id === day.id
+                            const iconColor = isCheckOut && !isCheckIn ? '#892817' : isCheckIn ? '#1d5e13' : 'var(--text-faint)'
+                            const backgroundColor = isCheckOut && !isCheckIn ? '#ffe9e3' : isCheckIn ? '#ddebdb' : 'var(--bg-tertiary)'
+                            const checkInText = isCheckOut && !isCheckIn ? 'Check out from' : isCheckIn ? 'Check into' : 'Sleep at'
+                            return (
+                              <button type="button" key={acc.id} onClick={e => { e.stopPropagation(); if ((acc as any).place_id) onPlaceClick((acc as any).place_id) }} className="badge" style={{ backgroundColor: backgroundColor, cursor: (acc as any).place_id ? 'pointer' : 'default'}}>
+                                <Hotel size={14} strokeWidth={1.8} style={{ color: iconColor, flexShrink: 0 }} />
+                                <span style={{ fontSize: 'calc(10.5px * var(--fs-scale-caption, 1))', color: iconColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{checkInText} <span className="hotel-name">{(acc as any).place_name || (acc as any).reservation_title}</span></span>
+                              </button>
+                            )
+                          })
+                        })()}
+                        {/* Active rental car badges */}
+                        {(() => {
+                          const activeRentals = getActiveRentalsForDay(day.id)
+                          if (activeRentals.length === 0) return null
+                          return activeRentals.map(r => (
+                            <button type="button" key={`rental-${r.id}`} onClick={e => { e.stopPropagation(); setTransportDetail(r) }} className="bg-surface-hover" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 1, minWidth: 0, cursor: 'pointer', borderRadius: 7, padding: '2px 7px 2px 6px', border: 'none', font: 'inherit', textAlign: 'left' }}>
+                              <Car size={11} strokeWidth={1.8} className="text-content-faint" style={{ flexShrink: 0 }} />
+                              <span className="text-content-muted" style={{ fontSize: 'calc(10.5px * var(--fs-scale-caption, 1))', fontWeight: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</span>
+                            </button>
+                          ))
+                        })()}
+                      </div>
+                      )
                     })()}
-                    {/* Active rental car badges */}
-                    {(() => {
-                      const activeRentals = getActiveRentalsForDay(day.id)
-                      if (activeRentals.length === 0) return null
-                      return activeRentals.map(r => (
-                        <button type="button" key={`rental-${r.id}`} onClick={e => { e.stopPropagation(); setTransportDetail(r) }} className="bg-surface-hover" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 1, minWidth: 0, cursor: 'pointer', borderRadius: 7, padding: '2px 7px 2px 6px', border: 'none', font: 'inherit', textAlign: 'left' }}>
-                          <Car size={11} strokeWidth={1.8} className="text-content-faint" style={{ flexShrink: 0 }} />
-                          <span className="text-content-muted" style={{ fontSize: 'calc(10.5px * var(--fs-scale-caption, 1))', fontWeight: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</span>
-                        </button>
-                      ))
-                    })()}
-                  </div>
+
                   {cost && (
                     <div style={{ marginTop: 2 }}>
                       <span className="text-[#059669]" style={{ fontSize: 'calc(11px * var(--fs-scale-caption, 1))' }}>{cost}</span>
@@ -1812,7 +1792,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                 <div
                   // The activity list — the largest region and the one behind the
                   // densest text, so its tint is the faintest of the three.
-                  style={{ background: dayTintBackground(dayTint, 'activity', '--day-tint-activity', 'var(--bg-hover)') ?? 'var(--bg-hover)', paddingTop: 6 }}
+                  style={{ background: dayTintBackground(dayTint, 'activity', '--day-tint-activity', 'none') ?? 'none'}}
                   onDragOver={e => { e.preventDefault(); const cur = dropTargetRef.current; if (draggingId && (!cur || cur.startsWith('end-'))) setDropTargetKey(`end-${day.id}`) }}
                   onDrop={e => {
                     e.preventDefault()
@@ -2058,10 +2038,10 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                             }}
                             style={{
                               display: 'flex', alignItems: 'center', gap: 8,
-                              padding: '7px 8px 7px 10px',
+                              padding: '8px 8px 8px 10px',
                               cursor: 'pointer',
                               background: lockedIds.has(assignment.id)
-                                ? 'rgba(220,38,38,0.08)'
+                                ? 'none'
                                 : isPlaceSelected ? 'var(--bg-selected)' : 'transparent',
                               borderLeft: lockedIds.has(assignment.id)
                                 ? '3px solid #dc2626'
@@ -2366,6 +2346,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                             // Opening the booking has no other trigger, so the row is
                             // the control; the buttons inside it answer for themselves.
                             // No press-scale — see the day header above (#2158).
+                            className="dp-row"
                             role="button"
                             data-no-press
                             tabIndex={0}
@@ -2420,16 +2401,8 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                               setDraggingId(null); setDropTargetKey(null); dragDataRef.current = null; window.__dragData = null
                             }}
                             onMouseEnter={e => { e.currentTarget.style.background = `${color}12` }}
-                            onMouseLeave={e => { e.currentTarget.style.background = `${color}08` }}
+                            onMouseLeave={e => { e.currentTarget.style.background = `none` }}
                             style={{
-                              display: 'flex', alignItems: 'center', gap: 8,
-                              padding: '7px 8px 7px 10px',
-                              margin: '1px 8px',
-                              borderRadius: 6,
-                              border: `1px solid ${color}33`,
-                              borderTop: showDropLine ? '2px solid var(--text-primary)' : undefined,
-                              borderBottom: showDropLineAfter ? '2px solid var(--text-primary)' : undefined,
-                              background: `${color}08`,
                               cursor: (transitMeta || (canEditDays && onEditTransport)) ? 'pointer' : 'default', userSelect: 'none',
                               transition: 'background 0.1s',
                               opacity: draggingId === res.id ? 0.4 : spanPhase === 'middle' ? 0.65 : 1,
@@ -2637,12 +2610,6 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                             if (grip) grip.style.opacity = '0.3'
                           }}
                           style={{
-                            position: 'relative',
-                            display: 'flex', alignItems: 'center', gap: 8,
-                            padding: '7px 8px 7px 2px',
-                            margin: '1px 8px',
-                            borderRadius: 6,
-                            border: `1px solid ${noteSkin.border}`,
                             borderTop: showDropLine ? '2px solid var(--text-primary)' : undefined,
                             background: noteSkin.background,
                             opacity: draggingId === `note-${note.id}` ? 0.4 : 1,
@@ -2660,7 +2627,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                               {note.text}
                             </span>
                             {note.time && (
-                              <div className="collab-note-md" style={{ fontSize: 'calc(10.5px * var(--fs-scale-caption, 1))', fontWeight: 400, color: 'var(--text-faint)', lineHeight: '1.4', marginTop: 2, wordBreak: 'break-word' }}>
+                              <div className="collab-note-md">
                                 {/* A link in a note goes to its own tab, and remarkBreaks
                                     keeps a single newline a line break — people write notes
                                     as lines, not as Markdown paragraphs. */}
