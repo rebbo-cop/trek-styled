@@ -1649,8 +1649,6 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                   transition: 'background 0.12s',
                   userSelect: 'none',
                   outline: isDragTarget ? '2px dashed rgba(17,24,39,0.25)' : 'none',
-                  outlineOffset: -2,
-                  borderRadius: 8,
                   touchAction: 'manipulation',
                 }}
                 // A tinted header hovers to a deeper mix of its own tone rather than to
@@ -1672,13 +1670,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                   const hasWeather = !!(day.date && wLat != null && wLng != null)
                  
                   if (hasWeather) return (
-                    <div className='dp-weather' style={{
-                      // and --text-muted is already borderline on the untinted pill.
-                      background: isSelected ? 'none' : (dayTintBackground(dayTint, 'badge', '--day-tint-badge', 'none') ?? 'none'),
-                      color: isSelected ? 'var(--accent-on)' : (dayTinted(dayTint, 'badge') ? 'var(--text-secondary)' : 'var(--text-muted)')
-                    }}>
-                      <WeatherWidget lat={wLat ?? null} lng={wLng ?? null} date={day.date} stacked locationName={weatherName} />
-                    </div>
+                    <WeatherWidget lat={wLat ?? null} lng={wLng ?? null} date={day.date} stacked locationName={weatherName} />
                   )
                 })()}
 
@@ -1720,8 +1712,8 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                           return dayAccs.map(acc => {
                             const isCheckIn = acc.start_day_id === day.id
                             const isCheckOut = acc.end_day_id === day.id
-                            const iconColor = isCheckOut && !isCheckIn ? '#892817' : isCheckIn ? '#1d5e13' : 'var(--text-faint)'
-                            const backgroundColor = isCheckOut && !isCheckIn ? '#ffe9e3' : isCheckIn ? '#ddebdb' : 'var(--bg-tertiary)'
+                            const iconColor = isCheckOut && !isCheckIn ? 'var(--check-out-text)' : isCheckIn ? 'var(--check-in-text)' : 'var(--text-faint)'
+                            const backgroundColor = isCheckOut && !isCheckIn ? 'var(--check-out-bg)' : isCheckIn ? 'var(--check-in-bg)' : 'var(--bg-tertiary)'
                             const checkInText = isCheckOut && !isCheckIn ? 'Check out from' : isCheckIn ? 'Check into' : 'Sleep at'
                             return (
                               <button type="button" key={acc.id} onClick={e => { e.stopPropagation(); if ((acc as any).place_id) onPlaceClick((acc as any).place_id) }} className="badge" style={{ backgroundColor: backgroundColor, cursor: (acc as any).place_id ? 'pointer' : 'default'}}>
@@ -2037,16 +2029,9 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                               setHoveredAssignmentId(null)
                             }}
                             style={{
-                              display: 'flex', alignItems: 'center', gap: 8,
-                              padding: '8px 8px 8px 10px',
-                              cursor: 'pointer',
                               background: lockedIds.has(assignment.id)
                                 ? 'none'
                                 : isPlaceSelected ? 'var(--bg-selected)' : 'transparent',
-                              borderLeft: lockedIds.has(assignment.id)
-                                ? '3px solid #dc2626'
-                                : '3px solid transparent',
-                              borderTop: showDropLine ? '2px solid var(--text-primary)' : undefined,
                               transition: 'background 0.15s, border-color 0.15s',
                               opacity: isDraggingThis ? 0.4 : 1,
                             }}
@@ -2114,8 +2099,8 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                                 // Day-specific note on this stop (#2163) — one muted
                                 // caption line so the timeline shows the note exists
                                 // without swallowing the row.
-                                <div title={t('places.assignmentNotes')} style={{ marginTop: 2, display: 'flex', alignItems: 'center', gap: 4, fontSize: 'calc(10px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', overflow: 'hidden' }}>
-                                  <StickyNote size={9} strokeWidth={2} style={{ flexShrink: 0 }} />
+                                <div className="sticky-note" title={t('places.assignmentNotes')}>
+                                  <StickyNote size={11} strokeWidth={2} style={{ flexShrink: 0 }} />
                                   <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', lineHeight: 1.2 }}>{assignment.notes}</span>
                                 </div>
                               )}
@@ -2128,7 +2113,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                                 // Stacked, because the chip lines are inline-flex and would
                                 // otherwise run together on one.
                                 return (
-                                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                  <div className="dp-row-confirms">
                                     {linked.map(res => {
                                       const confirmed = res.status === 'confirmed'
                                       const hasEndpoints = onToggleConnection && (res.endpoints || []).length >= 2
@@ -2138,12 +2123,17 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                                       // sentence. They are separate chips now: same tint so they still
                                       // belong together, own outline so the eye can take them one at a time.
                                       const RI = RES_ICONS[res.type] || Ticket
-                                      const tint = confirmed ? 'bg-[rgba(22,163,74,0.1)] text-[#16a34a]' : 'bg-[rgba(217,119,6,0.1)] text-[#d97706]'
+                                      //const tint = confirmed ? 'bg-[rgba(22,163,74,0.1)] text-[#16a34a]' : 'bg-[rgba(217,119,6,0.1)] text-[#d97706]'
+                                      const tint = confirmed ? 'var(--check-in-text)' : 'var(--check-out-text)'
+                                      const tintBG = confirmed ? 'var(--check-in-bg)' : 'var(--check-out-bg)'
+
                                       const chip: React.CSSProperties = {
-                                        display: 'inline-flex', alignItems: 'center', gap: 3,
-                                        padding: '1px 6px', borderRadius: 5,
-                                        fontSize: 'calc(9px * var(--fs-scale-caption, 1))', fontWeight: 600,
+                                        display: 'inline-flex', alignItems: 'center', gap: 4,
+                                        padding: '2px 8px', borderRadius: 4,
+                                        fontSize: 'calc(10px * var(--fs-scale-caption, 1))', fontWeight: 500,
                                         whiteSpace: 'nowrap',
+                                        color: tint,
+                                        background: tintBG,
                                       }
                                       const { time: st } = splitReservationDateTime(res.reservation_time)
                                       const { time: et } = splitReservationDateTime(res.reservation_end_time)
@@ -2160,7 +2150,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                                         // chips stay on one line even when the row gets narrow.
                                         <div key={res.id} style={{ marginTop: 3, display: 'inline-flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
                                           <div className={tint} style={chip}>
-                                            <RI size={8} />
+                                            <RI size={10} />
                                             <span className="hidden sm:inline">{confirmed ? t('planner.resConfirmed') : t('planner.resPending')}</span>
                                           </div>
                                           {timeLabel && <span className={tint} style={{ ...chip, fontWeight: 500 }}>{timeLabel}</span>}
