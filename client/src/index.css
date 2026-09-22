@@ -271,6 +271,14 @@ html.dark .bg-slate-50\/60, html.dark [class*="bg-slate-50/"] { background-color
   opacity: 1;
   pointer-events: auto;
 }
+
+.dp-row-confirms {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: var(--sp-2) 0;
+}
+
 @media (max-width: 767px), (pointer: coarse) {
   .reorder-buttons {
     flex-direction: row !important;
@@ -714,17 +722,17 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 
   /* Theme colors */
   --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
+  --bg-secondary: #eceff4;
+  --bg-tertiary: #e5e9f0;
   --bg-elevated: rgba(250,250,250,0.82);
   --bg-card: #ffffff;
   --bg-input: #ffffff;
   --bg-hover: rgba(0,0,0,0.03);
   --bg-selected: #e2e8f0;
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-muted: #6b7280;
-  --text-faint: #7c8a9c;
+  --text-primary: #2e3440;
+  --text-secondary: #3b4252;
+  --text-muted: #434c5e;
+  --text-faint: #4c566a;
   --border-primary: #e5e7eb;
   --border-secondary: #f3f4f6;
   --border-faint: rgba(0,0,0,0.06);
@@ -791,6 +799,12 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   --shadow-dropdown: 0 8px 24px rgba(0, 0, 0, 0.12);
   --shadow-popover: 0 8px 32px rgba(0, 0, 0, 0.18);
 
+  /* Check in/out tokens */
+  --check-in-bg: #ddebdb;
+  --check-in-text: #1d5e13;
+  --check-out-bg: #ffe9e3;
+  --check-out-text: #892817;
+
   /* Journey design tokens */
   --journal-bg: #FAFAFA;
   --journal-card: #FFFFFF;
@@ -822,6 +836,8 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   --vg-glass-br: oklch(0.88 0.008 70 / .7);
   --vg-glass-sh: 0 1px 2px oklch(0.4 0.02 60 / .05), 0 12px 32px -14px oklch(0.3 0.02 60 / .2);
   --vg-hi: inset 0 1px 0 oklch(1 0 0 / .8);
+
+  
 }
 
 @media (max-width: 767px) {
@@ -873,7 +889,7 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   --day-tint-l-min: 0.48;
   --day-tint-l-max: 0.88;
 
-  --success: #22c55e;  --success-soft: rgba(34, 197, 94, 0.15);
+  --success: #ddebdb;  --success-soft: #1d5e13;
   --danger:  #ef4444;  --danger-soft:  rgba(239, 68, 68, 0.15);
   --warning: #f59e0b;  --warning-soft: rgba(245, 158, 11, 0.15);
   --info:    #3b82f6;  --info-soft:    rgba(59, 130, 246, 0.15);
@@ -901,6 +917,12 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   --mood-neutral: #9a9a94;
   --mood-tired: #6db3f0;
   --mood-rough: #a9a3f0;
+
+    /* Check in/out tokens */
+  --check-in-bg: #1f2f1d;
+  --check-in-text: #75a66e;
+  --check-out-bg: #321c15;
+  --check-out-text: #de533b;
 
   /* Vacay "liquid glass" facelift tokens (dark) */
   --vg-ink:   oklch(0.96 0 0);
@@ -933,21 +955,23 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
    monochrome accent above is untouched — existing users see no change. */
 
 :root[data-scheme="indigo"] {
-  --accent: #526D82; --accent-text: #ffffff; --accent-on: #213544;
-  --accent-hover: #4338ca; --accent-subtle: #d9dff2;
+  --accent: #6C5B7B; --accent-text: #ffffff; --accent-on: #ffffff;
+  --accent-hover: #4338ca; --accent-subtle: #e1dde4;
 }
 .dark[data-scheme="indigo"] {
-  --accent: #6366f1; --accent-text: #ffffff; --accent-on: #a2b7c7;
-  --accent-hover: #526D82; --accent-subtle: #464952;
+  --accent: #A6B1E1; --accent-text: #272a35; --accent-on: #272a35;
+  --accent-hover: #526D82; --accent-subtle: #191a1a;
+  --bg-card: #272a35;
 }
 
 :root[data-scheme="teal"] {
   --accent: #0d9488; --accent-text: #ffffff; --accent-on: #0f766e;
-  --accent-hover: #0f766e; --accent-subtle: #c7d7d4;
+  --accent-hover: #0f766e; --accent-subtle: #d9e3e1;
 }
 .dark[data-scheme="teal"] {
   --accent: #14b8a6; --accent-text: #04211f; --accent-on: #5eead4;
-  --accent-hover: #0d9488; --accent-subtle: rgba(20, 184, 166, 0.18);
+  --accent-hover: #0d9488; --accent-subtle: #0c0d0d;
+  --bg-card: #1d2020;
 }
 
 :root[data-scheme="rose"] {
@@ -978,12 +1002,13 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 }
 
 :root[data-scheme="green"] {
-  --accent: #5F6F52; --accent-text: #ffffff; --accent-on: #1a2412;
-  --accent-hover: #38442d; --accent-subtle: #e4edde;
+  --accent: #5C766D; --accent-text: #ffffff; --accent-on: #1a2412;
+  --accent-hover: #57756d; --accent-subtle: #dde4e2;
 }
 .dark[data-scheme="green"] {
-  --accent: #A9B388; --accent-text: #ffffff; --accent-on: #e1e7ce;
-  --accent-hover: #a0ad94; --accent-subtle: #e4edde;
+  --accent: #9CB080; --accent-text: #343b2b; --accent-on: #e1e7ce;
+  --accent-hover: #273338; --accent-subtle: #343b2b;
+  --bg-card: rgb(19, 19, 22, 0.82);
 }
 
 /* High-Contrast — raises neutral text/border contrast and solidifies surfaces,
@@ -1421,7 +1446,7 @@ img[alt="TREK"] {
   background-color: var(--bg-card);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
-  margin: var(--sp-1);
+  margin: 6px 4px;
   padding: 0;
 }
 
@@ -1429,17 +1454,20 @@ img[alt="TREK"] {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 16px 12px;
+  padding: 16px 12px 12px 12px;
 }
 
 .dp-weather {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
-  flex-shrink: 0;
-  align-self: flex-start;
+  gap: 4px;
+
   width: 36px;
+
+  font-size: calc(11px * var(--fs-scale-caption, 1));
+  font-weight: 400;
+  text-align: center;
 }
 
 .dp-title-layout {
@@ -1447,7 +1475,6 @@ img[alt="TREK"] {
   align-items: flex-start;
   flex-direction: column;
   gap: 0;
-  min-width: 0;
   padding-left: var(--sp-3);
 }
 
@@ -1469,7 +1496,7 @@ img[alt="TREK"] {
   font-weight: 500;
   color: var(--text-faint);
   white-space: nowrap;
-  line-height: 14px;
+  line-height: 120%;
 }
 
 .dp-badges {
@@ -1505,6 +1532,19 @@ img[alt="TREK"] {
   line-height: 140%;
   margin-top: 2px;
   word-break: break-word;
+}
+
+.sticky-note {
+   margin: 8px 0;
+   padding: var(--sp-3);
+   border-radius: var(--radius-sm);
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   font-size: calc(11px * var(--fs-scale-caption, 1));
+   color: var(--text-primary);
+   background-color: var(--bg-tertiary);
+   overflow: hidden;
 }
 
 /* Day-plan header action grid (edit / +transport / note / collapse) */

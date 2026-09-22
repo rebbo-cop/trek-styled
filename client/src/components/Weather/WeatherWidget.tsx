@@ -144,16 +144,16 @@ export default function WeatherWidget({ lat, lng, date, compact = false, stacked
 
   if (stacked) {
     return (
-      <div title={title} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, fontSize: 'calc(12px * var(--fs-scale-caption, 1))', fontWeight: 400, letterSpacing: -1, lineHeight: 1, color: 'inherit', ...fontStyle }}>
+      <div className="dp-weather" title={title} style={{ color: 'inherit', ...fontStyle }}>
         <span style={{ color: 'var(--accent'}}><WeatherIcon main={weather.main} size={24} /></span>
-        {temp !== null && <span>{temp}°</span>}
+        {temp !== null && <span style={{ color: 'var(--text-muted)' }}>{temp}°</span>}
       </div>
     )
   }
 
   if (compact) {
     return (
-      <span title={title} style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 'calc(12px * var(--fs-scale-caption, 1))', color: '#6b7280', ...fontStyle }}>
+      <span className="dp-weather" title={title} style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 'calc(12px * var(--fs-scale-caption, 1))', color: '#6b7280', ...fontStyle }}>
         <WeatherIcon main={weather.main} size={16} />
         {temp !== null && <span>{temp}{unit}</span>}
       </span>
@@ -161,7 +161,7 @@ export default function WeatherWidget({ lat, lng, date, compact = false, stacked
   }
 
   return (
-    <div title={title} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 'calc(13px * var(--fs-scale-body, 1))', color: '#374151', background: 'rgba(0,0,0,0.04)', borderRadius: 8, padding: '5px 10px', ...fontStyle }}>
+    <div className="dp-weather" title={title} style={{  alignItems: 'center', gap: 6, fontSize: 'calc(13px * var(--fs-scale-body, 1))', color: '#374151', background: 'rgba(0,0,0,0.04)', borderRadius: 8, padding: '5px 10px', ...fontStyle }}>
       <WeatherIcon main={weather.main} size={15} />
       {temp !== null && <span style={{ fontWeight: 500 }}>{temp}{unit}</span>}
       {weather.description && <span style={{ fontSize: 'calc(14px * var(--fs-scale-caption, 1))', color: '#9ca3af', textTransform: 'capitalize' }}>{weather.description}</span>}

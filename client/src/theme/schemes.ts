@@ -15,8 +15,8 @@ export interface SchemeSwatch {
 export const APPEARANCE_SCHEMES: SchemeSwatch[] = [
   { id: 'default', swatch: { light: '#111827', dark: '#e4e4e7' } },
   { id: 'highContrast', swatch: { light: '#1d4ed8', dark: '#60a5fa' } },
-  { id: 'indigo', swatch: { light: '#526D82', dark: '#9DB2BF' } },
-  { id: 'teal', swatch: { light: '#395B64', dark: '#A5C9CA' } },
+  { id: 'indigo', swatch: { light: '#6C5B7B', dark: '#A6B1E1' } },
+  { id: 'teal', swatch: { light: '#0d9488', dark: '#14b8a6' } },
   { id: 'rose', swatch: { light: '#e11d48', dark: '#f43f5e' } },
   { id: 'amber', swatch: { light: '#d97706', dark: '#f59e0b' } },
   { id: 'violet', swatch: { light: '#7c3aed', dark: '#8b5cf6' } },
