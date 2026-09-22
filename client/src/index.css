@@ -615,17 +615,19 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 
   /* Theme colors */
   --bg-primary: #ffffff;
-  --bg-secondary: #eceff4;
+  --bg-secondary: #f2f4f8;
   --bg-tertiary: #e5e9f0;
   --bg-elevated: rgba(250,250,250,0.82);
   --bg-card: #ffffff;
   --bg-input: #ffffff;
   --bg-hover: rgba(0,0,0,0.03);
   --bg-selected: #e2e8f0;
+
   --text-primary: #2e3440;
   --text-secondary: #3b4252;
   --text-muted: #434c5e;
   --text-faint: #4c566a;
+
   --border-primary: #e5e7eb;
   --border-secondary: #f3f4f6;
   --border-faint: rgba(0,0,0,0.06);
@@ -750,10 +752,12 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
   --bg-input: #1c1c21;
   --bg-hover: rgba(255,255,255,0.06);
   --bg-selected: rgba(255,255,255,0.1);
+
   --text-primary: #f4f4f5;
   --text-secondary: #d4d4d8;
-  --text-muted: #a1a1aa;
-  --text-faint: #71717a;
+  --text-muted: #cacad0;
+  --text-faint: #aeaeb4; /* CC 7.43 */
+
   --border-primary: #27272a;
   --border-secondary: #1c1c21;
   --border-faint: rgba(255,255,255,0.07);
@@ -849,17 +853,17 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 
 :root[data-scheme="indigo"] {
   --accent: #6C5B7B; --accent-text: #ffffff; --accent-on: #ffffff;
-  --accent-hover: #4338ca; --accent-subtle: #e1dde4;
+  --accent-hover: #4338ca; --accent-subtle: #e6e5e6;
 }
 .dark[data-scheme="indigo"] {
   --accent: #A6B1E1; --accent-text: #272a35; --accent-on: #272a35;
-  --accent-hover: #526D82; --accent-subtle: #191a1a;
-  --bg-card: #272a35;
+  --accent-hover: #526D82; --accent-subtle: #1a191a;
+  --bg-card: #242429;
 }
 
 :root[data-scheme="teal"] {
   --accent: #0d9488; --accent-text: #ffffff; --accent-on: #0f766e;
-  --accent-hover: #0f766e; --accent-subtle: #d9e3e1;
+  --accent-hover: #0f766e; --accent-subtle: #e9ecec;
 }
 .dark[data-scheme="teal"] {
   --accent: #14b8a6; --accent-text: #04211f; --accent-on: #5eead4;
@@ -896,7 +900,7 @@ input[type="number"], input[type="time"], input[type="date"], input[type="dateti
 
 :root[data-scheme="green"] {
   --accent: #5C766D; --accent-text: #ffffff; --accent-on: #1a2412;
-  --accent-hover: #57756d; --accent-subtle: #dde4e2;
+  --accent-hover: #57756d; --accent-subtle: #eaebeb;
 }
 .dark[data-scheme="green"] {
   --accent: #9CB080; --accent-text: #343b2b; --accent-on: #e1e7ce;
@@ -1376,6 +1380,8 @@ img[alt="TREK"] {
   font-weight: 500;
   line-height: 160%;
   color: var(--text-primary);
+  display: inline-block;
+  width: calc(100%);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1419,12 +1425,19 @@ img[alt="TREK"] {
 }
 
 .collab-note-md {
-  font-size: calc(10.5px * var(--fs-scale-caption, 1));
+  font-size: calc(10px * var(--fs-scale-caption, 1));
   font-weight: 400;
-  color: var(--text-secondary);
-  line-height: 140%;
+  color: var(--text-faint);
   margin-top: 2px;
-  word-break: break-word;
+}
+
+.collab-note-md p {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(100%);
+  line-height: 140%;
 }
 
 .sticky-note {
@@ -1436,7 +1449,7 @@ img[alt="TREK"] {
    gap: 6px;
    font-size: calc(11px * var(--fs-scale-caption, 1));
    color: var(--text-primary);
-   background-color: var(--bg-tertiary);
+   background-color: var(--bg-secondary);
    overflow: hidden;
 }
 

@@ -2091,7 +2091,7 @@ const DayPlanSidebar = React.memo(function DayPlanSidebar(props: DayPlanSidebarP
                                 )}
                               </div>
                               {(place.description || place.address || cat?.name) && (
-                                <div className="collab-note-md" style={{ marginTop: 2, fontSize: 'calc(10px * var(--fs-scale-caption, 1))', color: 'var(--text-faint)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', lineHeight: 1.2, maxHeight: '1.2em' }}>
+                                <div className="collab-note-md" style={{ maxHeight: '1.2em' }}>
                                   <Markdown remarkPlugins={[remarkGfm]}>{place.description || place.address || cat?.name || ''}</Markdown>
                                 </div>
                               )}
