@@ -173,6 +173,10 @@ const admin: TranslationStrings = {
   'admin.placesEnrich.title': 'Enriquecimento de lugares',
   'admin.placesEnrich.subtitle':
     'Mostra imagens e uma descrição ao adicionar um lugar. Wikipédia e OpenStreetMap são sempre usados; o Google entra quando Fotos de lugares ou Detalhes de lugares estão ativos.',
+  'admin.placesGoogleOnly.title': 'Pesquisar apenas com o Google',
+  'admin.placesGoogleOnly.subtitle': 'Toda pesquisa e toda sugestão vão para o Google Places. Desligado, o índice do TREK e o OpenStreetMap respondem primeiro, e o Google só é consultado se eles não encontrarem nada.',
+  'admin.placesGoogleOnly.missingKey': 'Precisa de uma chave de API do Google Maps. Sem ela, a pesquisa usa o índice do TREK e o OpenStreetMap, independentemente desta chave.',
+  'admin.placesGoogleOnly.otherProvider': 'Precisa do Google como provedor de lugares. Com Amap ou OpenStreetMap selecionado, nenhuma busca vai ao Google, seja qual for a posição deste botão.',
   'admin.transitProvider.title': 'Provedor de transporte público',
   'admin.transitProvider.subtitle': 'Qual serviço responde à busca de transporte público.',
   'admin.transitProvider.transitous': 'Transitous (grátis)',
